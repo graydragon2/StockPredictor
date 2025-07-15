@@ -1,12 +1,48 @@
 <Window x:Class="StockPredictor.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:StockPredictor.ViewModels"
         Title="Stock Predictor" Height="720" Width="1080"
         Background="White">
+
+    <Window.DataContext>
+        <vm:InvestmentViewModel />
+    </Window.DataContext>
+
     <Grid>
-        <TextBlock Text="Welcome to Stock Predictor" 
-                   FontSize="24" 
-                   HorizontalAlignment="Center" 
-                   VerticalAlignment="Center"/>
+        <TabControl Margin="10">
+            <!-- Add Investment Tab -->
+            <TabItem Header="➕ Add Investment">
+                <StackPanel Margin="20">
+                    <TextBlock Text="Stock Ticker:" />
+                    <TextBox Text="{Binding Ticker, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+
+                    <TextBlock Text="Amount Invested ($):" Margin="0,10,0,0"/>
+                    <TextBox Text="{Binding Amount, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+
+                    <TextBlock Text="Price per Share:" Margin="0,10,0,0"/>
+                    <TextBox Text="{Binding Price, UpdateSourceTrigger=PropertyChanged}" Width="200"/>
+
+                    <TextBlock Text="Date of Purchase:" Margin="0,10,0,0"/>
+                    <DatePicker SelectedDate="{Binding Date}" Width="200"/>
+
+                    <Button Content="Add Investment" Margin="0,20,0,0" Width="200"
+                            Click="AddInvestment_Click" />
+                </StackPanel>
+            </TabItem>
+
+            <!-- Investment List -->
+            <TabItem Header="📁 Portfolio">
+                <DataGrid ItemsSource="{Binding Investments}" AutoGenerateColumns="False" Margin="10">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="Ticker" Binding="{Binding Ticker}" />
+                        <DataGridTextColumn Header="Amount" Binding="{Binding AmountInvested}" />
+                        <DataGridTextColumn Header="Price" Binding="{Binding PricePerShare}" />
+                        <DataGridTextColumn Header="Shares" Binding="{Binding SharesPurchased}" />
+                        <DataGridTextColumn Header="Date" Binding="{Binding PurchaseDate}" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
     </Grid>
 </Window>
